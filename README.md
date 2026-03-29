@@ -2,7 +2,7 @@
 
 **Your personal library for Claude Code skills.**
 
-[Lea esto en Espanol](README.es.md)
+[Lea esto en Español](README.es.md)
 
 ---
 

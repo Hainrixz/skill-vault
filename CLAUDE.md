@@ -43,23 +43,28 @@ Accepts: GitHub URL, raw SKILL.md content pasted by the user, a skill name to se
    - If a skill name: search skills.sh or GitHub for the skill, fetch its SKILL.md.
    - If a local file path: read the file.
 
-2. **Extract metadata** from the SKILL.md frontmatter:
+2. **Check for duplicates:**
+   - Search `catalog.md` for an existing skill with the same name.
+   - If a match is found, inform the user and ask whether to: update the existing entry, save as a new entry with a different name, or cancel.
+   - If no match, continue.
+
+3. **Extract metadata** from the SKILL.md frontmatter:
    - `name`, `description`, `version`, `allowed-tools`, and any other frontmatter fields.
    - Record the source URL and source type (github, skills.sh, manual, npm).
 
-3. **Run security analysis** using the Security Analysis Engine (see below). Assign a safety rating: `safe`, `caution`, or `dangerous`.
+4. **Run security analysis** using the Security Analysis Engine (see below). Assign a safety rating: `safe`, `caution`, or `dangerous`.
 
-4. **If rated DANGEROUS:** Stop and warn the user. Display the specific security findings. Ask for explicit confirmation before proceeding. If the user declines, do not save the skill.
+5. **If rated DANGEROUS:** Stop and warn the user. Display the specific security findings. Ask for explicit confirmation before proceeding. If the user declines, do not save the skill.
 
-5. **Determine the category:**
+6. **Determine the category:**
    - Read the existing category folders in `categories/`.
    - Read each `_category.md` to understand what each category covers.
    - Match the skill to the best-fitting category based on its description and functionality.
    - If no existing category is a good fit, create a new category folder with a `_category.md` file using the template from `templates/category-readme.md`.
 
-6. **Create the skill entry** at `categories/<category>/<skill-name>.md` using the template from `templates/skill-entry.md`. Fill in all fields. Embed the full original SKILL.md content in the "Original SKILL.md Content" section.
+7. **Create the skill entry** at `categories/<category>/<skill-name>.md` using the template from `templates/skill-entry.md`. Fill in all fields. Embed the full original SKILL.md content in the "Original SKILL.md Content" section.
 
-7. **Update indexes:**
+8. **Update indexes:**
    - Add a new row to the table in `catalog.md`. Update the summary counts at the top.
    - Add a new row to the skill table in the category's `_category.md`.
 
@@ -153,11 +158,14 @@ The user wants to find skills they don't already have.
 
 **Workflow:**
 
-1. Find the skill entry file in `categories/`.
-2. Delete the skill entry file.
-3. Remove its row from `catalog.md` and update the summary counts.
-4. Remove its row from the category's `_category.md`.
-5. Confirm removal to the user.
+1. **Identify the skill:** Match the user's input against skill names in `catalog.md`. If no match is found, inform the user and list similar names (if any). Stop.
+2. **Confirm deletion:** Display the skill name, category, and safety rating. Ask the user to confirm removal.
+3. **Delete the skill entry file** from `categories/`.
+4. **Update indexes:**
+   - Remove its row from `catalog.md` and update the summary counts.
+   - Remove its row from the category's `_category.md`.
+   - If the category has no remaining skills (only `_category.md` left), inform the user and ask whether to remove the empty category folder.
+5. **Confirm removal** to the user with the skill name and category.
 
 ---
 
@@ -170,6 +178,8 @@ When analyzing any skill, follow this 13-point checklist. Each finding should be
 - **SAFE**: No shell commands, no network calls, no file deletion, limited tool access, read-only operations. Low risk.
 - **CAUTION**: Uses Bash but commands are bounded and reasonable. Makes network calls to known/documented endpoints. Moderate tool access. Writes files but only in expected locations. Medium risk — review findings before using.
 - **DANGEROUS**: Contains one or more auto-dangerous triggers (see below). High risk — do NOT save without explicit user confirmation.
+
+> **Capitalization convention:** Safety ratings are stored as lowercase (`safe`, `caution`, `dangerous`) in skill entry frontmatter and data fields. When displayed to users (in `/vault-list`, `/vault-recommend`, or conversation output), use uppercase brackets: `[SAFE]`, `[CAUTION]`, `[DANGEROUS]`.
 
 ### Auto-Dangerous Triggers
 
