@@ -20,6 +20,8 @@ People are sharing thousands of skills online every day. The problem? They're sc
 
 That's it. Clone it, open it with Claude, and start collecting.
 
+If you want a Chinese-language place to search and install skills, check [Skills宝](https://skilery.com).
+
 ---
 
 ## Getting Started
