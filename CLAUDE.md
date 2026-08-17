@@ -224,3 +224,14 @@ For every skill, check:
 - If a user asks what they should use for a project, treat it as `/vault-recommend`.
 - If a user pastes a SKILL.md or URL without specifying a command, treat it as `/vault-add`.
 - If a user asks "what do I have?" or similar, treat it as `/vault-list`.
+
+# CLAUDE.md - Token Efficient Rules
+
+1. Think before acting. Read existing files before writing code.
+2. Be concise in output but thorough in reasoning.
+3. Prefer editing over rewriting whole files.
+4. Do not re-read files you have already read unless the file may have changed.
+5. Test your code before declaring done.
+6. No sycophantic openers or closing fluff.
+7. Keep solutions simple and direct.
+8. User instructions always override this file.
